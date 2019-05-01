@@ -9,6 +9,8 @@ package fahrzeug_vermietung;
  *
  * @author oskar
  */
-public class Fahrzeug {
+public class vehicle {
+    private String name;
+    private int vID;
     
 }

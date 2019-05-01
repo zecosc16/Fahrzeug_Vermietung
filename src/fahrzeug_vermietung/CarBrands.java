@@ -9,13 +9,6 @@ package fahrzeug_vermietung;
  *
  * @author oskar
  */
-public class Fahrzeug_Vermietung {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
-    
+public enum CarBrands {
+    BMW,VW,Mercedes,Fiat,Tesla,Audi,Ford;
 }
