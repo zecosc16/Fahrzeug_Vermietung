@@ -5,49 +5,48 @@
  */
 package fahrzeug_vermietung;
 
+import java.time.LocalDate;
+import java.time.Month;
+
 /**
  *
  * @author oskar
  */
-public class VehicleDia extends javax.swing.JDialog {
+public class CustomerDialog extends javax.swing.JDialog {
 
     /**
-     * Creates new form VehicleDia
+     * Creates new form CustomerDialog
      */
-    public VehicleDia(java.awt.Frame parent, boolean modal) {
+    public CustomerDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
-    
-    public VehicleDia(java.awt.Frame parent, boolean modal, int vID) {
-        super(parent, modal);
-        initComponents();
-        this.vID=vID;
-        
-        
-        for (CarBrands value : CarBrands.values()) {
-            cbBrand.addItem(value);
-        }
-    }
-    
-    private int amount;
+
     private boolean ok;
-    private int vID;
-    private Vehicle vehicle;
+    private String name;
+    private LocalDate gebDat;
+    private double money;
+    private String telNumber;
 
     public boolean isOk() {
         return ok;
     }
 
-    public Vehicle getVehicle() {
-        return vehicle;
+    public String getName() {
+        return name;
     }
 
-    public int getAmount() {
-        return amount;
+    public LocalDate getGebDat() {
+        return gebDat;
     }
-    
-    
+
+    public double getMoney() {
+        return money;
+    }
+
+    public String getTelNumber() {
+        return telNumber;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -63,24 +62,26 @@ public class VehicleDia extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        tfVehicleName = new javax.swing.JTextField();
-        cbBrand = new javax.swing.JComboBox<>();
-        jSPAmount = new javax.swing.JSpinner();
+        tfName = new javax.swing.JTextField();
+        tfTelNumb = new javax.swing.JTextField();
+        jSDay = new javax.swing.JSpinner();
+        jSMonth = new javax.swing.JSpinner();
+        jSYear = new javax.swing.JSpinner();
+        jSMoney = new javax.swing.JSpinner();
         btOK = new javax.swing.JButton();
         btCancel = new javax.swing.JButton();
-        jSPPricePDay = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jLabel1.setText("Brand:");
+        jLabel1.setText("Name:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(jLabel1, gridBagConstraints);
 
-        jLabel2.setText("Name:");
+        jLabel2.setText("Birthday Date:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -89,7 +90,7 @@ public class VehicleDia extends javax.swing.JDialog {
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(jLabel2, gridBagConstraints);
 
-        jLabel3.setText("Price per day:");
+        jLabel3.setText("Telefon number:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -98,7 +99,7 @@ public class VehicleDia extends javax.swing.JDialog {
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(jLabel3, gridBagConstraints);
 
-        jLabel4.setText("amount:");
+        jLabel4.setText("Money:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -107,29 +108,62 @@ public class VehicleDia extends javax.swing.JDialog {
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(jLabel4, gridBagConstraints);
 
-        tfVehicleName.setText("Golf ");
+        tfName.setText("Hans Fritz");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(tfName, gridBagConstraints);
+
+        tfTelNumb.setText("+4369934567");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(tfTelNumb, gridBagConstraints);
+
+        jSDay.setModel(new javax.swing.SpinnerNumberModel(15, 1, 31, 1));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(tfVehicleName, gridBagConstraints);
+        getContentPane().add(jSDay, gridBagConstraints);
 
+        jSMonth.setModel(new javax.swing.SpinnerNumberModel(6, 1, 12, 1));
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(cbBrand, gridBagConstraints);
+        getContentPane().add(jSMonth, gridBagConstraints);
 
-        jSPAmount.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
+        jSYear.setModel(new javax.swing.SpinnerNumberModel(1990, 1900, 2005, 1));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(jSYear, gridBagConstraints);
+
+        jSMoney.setModel(new javax.swing.SpinnerNumberModel(500, 100, null, 100));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jSPAmount, gridBagConstraints);
+        getContentPane().add(jSMoney, gridBagConstraints);
 
         btOK.setText("OK");
         btOK.addActionListener(new java.awt.event.ActionListener() {
@@ -140,49 +174,33 @@ public class VehicleDia extends javax.swing.JDialog {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(btOK, gridBagConstraints);
 
         btCancel.setText("Cancel");
-        btCancel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btCancelActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(btCancel, gridBagConstraints);
 
-        jSPPricePDay.setModel(new javax.swing.SpinnerNumberModel(70.0d, 40.0d, 1000.0d, 20.0d));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jSPPricePDay, gridBagConstraints);
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    
-    private void btOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOKActionPerformed
-        ok=true;
-        vehicle = new Vehicle(tfVehicleName.getText(), vID, (CarBrands) cbBrand.getSelectedItem(),jSPPricePDay.getWidth());
-        amount=(int) jSPAmount.getValue();
-        System.out.println(""+amount);
-        this.dispose();
-    }//GEN-LAST:event_btOKActionPerformed
 
-    private void btCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelActionPerformed
-        ok=false;
-        this.dispose();
-    }//GEN-LAST:event_btCancelActionPerformed
+    private void btOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOKActionPerformed
+        ok = true;
+        name = tfName.getText();
+        gebDat = LocalDate.of((int) jSYear.getValue(), (int) jSMonth.getValue(), (int) jSDay.getValue());
+        money=(double) jSMoney.getValue();
+        telNumber=tfTelNumb.getText();
+
+    }//GEN-LAST:event_btOKActionPerformed
 
     /**
      * @param args the command line arguments
@@ -201,20 +219,20 @@ public class VehicleDia extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VehicleDia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VehicleDia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VehicleDia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VehicleDia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CustomerDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                VehicleDia dialog = new VehicleDia(new javax.swing.JFrame(), true);
+                CustomerDialog dialog = new CustomerDialog(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -229,13 +247,15 @@ public class VehicleDia extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btCancel;
     private javax.swing.JButton btOK;
-    private javax.swing.JComboBox<CarBrands> cbBrand;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JSpinner jSPAmount;
-    private javax.swing.JSpinner jSPPricePDay;
-    private javax.swing.JTextField tfVehicleName;
+    private javax.swing.JSpinner jSDay;
+    private javax.swing.JSpinner jSMoney;
+    private javax.swing.JSpinner jSMonth;
+    private javax.swing.JSpinner jSYear;
+    private javax.swing.JTextField tfName;
+    private javax.swing.JTextField tfTelNumb;
     // End of variables declaration//GEN-END:variables
 }
