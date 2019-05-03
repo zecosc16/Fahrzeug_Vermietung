@@ -174,9 +174,9 @@ public class VehicleDia extends javax.swing.JDialog {
     private void btOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOKActionPerformed
         ok=true;
         vehicle = new Vehicle(tfVehicleName.getText(), vID, (CarBrands) cbBrand.getSelectedItem(),jSPPricePDay.getWidth());
-        amount=(int) jSPAmount.getValue();
+        amount=(int) jSPPricePDay.getValue();
         System.out.println(""+amount);
-        this.dispose();
+//        this.dispose();
     }//GEN-LAST:event_btOKActionPerformed
 
     private void btCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelActionPerformed
