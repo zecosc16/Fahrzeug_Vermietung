@@ -9,39 +9,45 @@ package fahrzeug_vermietung;
  *
  * @author oskar
  */
-public class VehicleDia extends javax.swing.JDialog {
+public class VehicleDialog extends javax.swing.JDialog {
 
     /**
      * Creates new form VehicleDia
      */
-    public VehicleDia(java.awt.Frame parent, boolean modal) {
+    public VehicleDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-    }
-    
-    public VehicleDia(java.awt.Frame parent, boolean modal, int vID) {
-        super(parent, modal);
-        initComponents();
-        this.vID=vID;
-        
-        
         for (CarBrands value : CarBrands.values()) {
             cbBrand.addItem(value);
         }
     }
     
+    
+    
     private int amount;
     private boolean ok;
-    private int vID;
-    private Vehicle vehicle;
+    
+    private CarBrands brand;
+    private String name;
+    private double pricePDay;
 
     public boolean isOk() {
         return ok;
     }
 
-    public Vehicle getVehicle() {
-        return vehicle;
+    public CarBrands getBrand() {
+        return brand;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPricePDay() {
+        return pricePDay;
+    }
+
+    
 
     public int getAmount() {
         return amount;
@@ -173,10 +179,12 @@ public class VehicleDia extends javax.swing.JDialog {
     
     private void btOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOKActionPerformed
         ok=true;
-        vehicle = new Vehicle(tfVehicleName.getText(), vID, (CarBrands) cbBrand.getSelectedItem(),jSPPricePDay.getWidth());
+        this.brand=(CarBrands) cbBrand.getSelectedItem();
+        name=tfVehicleName.getText();
+        pricePDay=(double) jSPPricePDay.getValue();
         amount=(int) jSPPricePDay.getValue();
         System.out.println(""+amount);
-//        this.dispose();
+        this.dispose();
     }//GEN-LAST:event_btOKActionPerformed
 
     private void btCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelActionPerformed
@@ -201,20 +209,21 @@ public class VehicleDia extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VehicleDia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VehicleDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VehicleDia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VehicleDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VehicleDia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VehicleDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VehicleDia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(VehicleDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                VehicleDia dialog = new VehicleDia(new javax.swing.JFrame(), true);
+                VehicleDialog dialog = new VehicleDialog(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

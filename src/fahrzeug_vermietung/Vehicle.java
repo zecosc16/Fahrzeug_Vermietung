@@ -8,6 +8,7 @@ package fahrzeug_vermietung;
 
 
 import fahrzeug_vermietung.*;
+import java.time.LocalDate;
 
 /**
  *
@@ -19,6 +20,9 @@ public class Vehicle {
     private CarBrands brand;
     private String name;
     private double pricePDay;
+    private LocalDate borrowTill;
+    
+    
 
     public Vehicle(String name,int vID, CarBrands brand, double pricePDay) {
         this.vID = vID;

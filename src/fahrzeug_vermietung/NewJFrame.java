@@ -18,7 +18,7 @@ public class NewJFrame extends javax.swing.JFrame {
         initComponents();
         
         
-        VehicleDia d = new VehicleDia(this, true,1);
+        VehicleDialog d = new VehicleDialog(this, true,1);
         d.setVisible(true);
     }
 

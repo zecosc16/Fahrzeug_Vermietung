@@ -14,8 +14,13 @@ public class GUI extends javax.swing.JFrame {
     /**
      * Creates new form GUI
      */
+    
+    private VehicleBL bl = new VehicleBL();
+    
     public GUI() {
         initComponents();
+        
+        vehicleList.setModel(bl);
     }
 
     /**
@@ -26,23 +31,66 @@ public class GUI extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        vehicleList = new javax.swing.JList<>();
+        btNewCustomer = new javax.swing.JButton();
+        btNewVehicle = new javax.swing.JButton();
+
+        jMenuItem1.setText("jMenuItem1");
+        jPopupMenu1.add(jMenuItem1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
+        vehicleList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(vehicleList);
 
-        getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(jScrollPane1, gridBagConstraints);
+
+        btNewCustomer.setText("Create new Customer");
+        btNewCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btNewCustomerActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(btNewCustomer, gridBagConstraints);
+
+        btNewVehicle.setText("Create new Vehicle");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        getContentPane().add(btNewVehicle, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btNewCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewCustomerActionPerformed
+        VehicleDialog dia = new VehicleDialog(this, true);
+        dia.setVisible(true);
+        if(dia.isOk()){
+            bl.add(dia.getName(),dia.getBrand(),dia.getPricePDay(),dia.getAmount());
+        }
+    }//GEN-LAST:event_btNewCustomerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -80,7 +128,11 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList<String> jList1;
+    private javax.swing.JButton btNewCustomer;
+    private javax.swing.JButton btNewVehicle;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JList<String> vehicleList;
     // End of variables declaration//GEN-END:variables
 }
