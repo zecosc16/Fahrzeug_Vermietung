@@ -51,4 +51,9 @@ public class Customer {
         money+=amount;
     }
     
+    
+    @Override
+    public String toString() {
+        return String.format("%d %s has %.2f€",custID,name,money);
+    }
 }

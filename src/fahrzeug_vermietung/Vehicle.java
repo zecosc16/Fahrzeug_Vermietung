@@ -9,6 +9,8 @@ package fahrzeug_vermietung;
 
 import fahrzeug_vermietung.*;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.ChronoUnit;
 
 /**
  *
@@ -21,6 +23,7 @@ public class Vehicle {
     private String name;
     private double pricePDay;
     private LocalDate borrowTill;
+    private Customer c;
     
     
 
@@ -31,6 +34,47 @@ public class Vehicle {
         this.pricePDay = pricePDay;
     }
 
+    @Override
+    public String toString() {
+        boolean t=true;
+        if(borrowTill!= null)
+            t=false;
+        return String.format("%s %s available: %s", brand,name,t);
+    }
+    
+    public void borrow(Customer c,LocalDate d) throws Exception{
+        if(this.borrowTill!=null)
+            throw new Exception("Vehicle is already borrowed");
+       double price = (double) (ChronoUnit.DAYS.between( LocalDate.now(),d)*pricePDay);
+       if(price>c.getMoney())
+           throw new Exception("Customer has not enough money");
+       borrowTill=d;
+       this.c=c;
+       
+    }
+
+    public int getvID() {
+        return vID;
+    }
+
+    public CarBrands getBrand() {
+        return brand;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPricePDay() {
+        return pricePDay;
+    }
+
+    public LocalDate getBorrowTill() {
+        return borrowTill;
+    }
+
+    
+    
     
    
     

@@ -3,7 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fahrzeug_vermietung;
+package GUI;
+
+import GUI.VehicleDialog;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.ChronoUnit;
 
 /**
  *
@@ -16,10 +21,9 @@ public class NewJFrame extends javax.swing.JFrame {
      */
     public NewJFrame() {
         initComponents();
-        
-        
-        VehicleDialog d = new VehicleDialog(this, true,1);
-        d.setVisible(true);
+        int i=(int) ChronoUnit.DAYS.between( LocalDate.now(),LocalDate.of(2019, Month.MAY, 5));
+     
+        System.out.println(i+"");
     }
 
     /**

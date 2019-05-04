@@ -16,6 +16,7 @@ public class Vehicle {
     private CarBrands brand;
     private String name;
     private double pricePDay;
+    private Customer cust;
 
     public Vehicle(String name,int vID, CarBrands brand, double pricePDay) {
         this.vID = vID;

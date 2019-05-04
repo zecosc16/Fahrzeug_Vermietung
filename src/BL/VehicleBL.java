@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fahrzeug_vermietung;
+package BL;
 
+import fahrzeug_vermietung.CarBrands;
+import fahrzeug_vermietung.Vehicle;
 import java.util.ArrayList;
 import javax.swing.AbstractListModel;
 
@@ -33,6 +35,10 @@ public class VehicleBL extends AbstractListModel{
             vID++;
             
         }
+        fireIntervalAdded(this, vehicle.size(), vehicle.size());
     }
     
+    public Vehicle get(int idx){
+        return vehicle.get(idx);
+    }
 }
