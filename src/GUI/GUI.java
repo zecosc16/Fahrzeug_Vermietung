@@ -13,6 +13,7 @@ import fahrzeug_vermietung.Customer;
 import fahrzeug_vermietung.Vehicle;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -29,7 +30,7 @@ public class GUI extends javax.swing.JFrame {
     
     public GUI() {
         initComponents();
-        consumerList.setModel(customerBL);
+        costumerList.setModel(customerBL);
         vehicleList.setModel(vehicleBL);
     }
 
@@ -50,7 +51,7 @@ public class GUI extends javax.swing.JFrame {
         btNewCustomer = new javax.swing.JButton();
         btNewVehicle = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        consumerList = new javax.swing.JList<>();
+        costumerList = new javax.swing.JList<>();
 
         jMBorrowCar.setText("borrow Car");
         jMBorrowCar.addActionListener(new java.awt.event.ActionListener() {
@@ -104,12 +105,12 @@ public class GUI extends javax.swing.JFrame {
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(btNewVehicle, gridBagConstraints);
 
-        consumerList.setModel(new javax.swing.AbstractListModel<String>() {
+        costumerList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        jScrollPane2.setViewportView(consumerList);
+        jScrollPane2.setViewportView(costumerList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -141,8 +142,9 @@ public class GUI extends javax.swing.JFrame {
     private void jMBorrowCarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMBorrowCarActionPerformed
         int idx=vehicleList.getSelectedIndex();
         Vehicle v = vehicleBL.get(idx);
-        Customer c = consumerList.geconsumerList.getSelectedIndex();
-        v.borrow(c, LocalDate.MIN);
+        Customer c = customerBL.get(costumerList.getSelectedIndex());
+        
+        v.borrow(c, );
     }//GEN-LAST:event_jMBorrowCarActionPerformed
 
     /**
@@ -183,7 +185,7 @@ public class GUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btNewCustomer;
     private javax.swing.JButton btNewVehicle;
-    private javax.swing.JList<String> consumerList;
+    private javax.swing.JList<String> costumerList;
     private javax.swing.JMenuItem jMBorrowCar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
