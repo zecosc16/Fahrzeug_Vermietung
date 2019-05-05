@@ -9,6 +9,6 @@ package Exceptions;
  *
  * @author oskar
  */
-public class NotEnoughMoney {
+public class NotEnoughMoney extends Exception{
     
 }

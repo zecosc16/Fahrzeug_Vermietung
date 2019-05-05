@@ -7,6 +7,7 @@ package fahrzeug_vermietung;
  */
 
 
+import Exceptions.NotEnoughMoney;
 import Exceptions.VehicleNotAvailable;
 import fahrzeug_vermietung.*;
 import java.time.LocalDate;
@@ -48,7 +49,8 @@ public class Vehicle {
             throw new VehicleNotAvailable();
        double price = (double) (ChronoUnit.DAYS.between( LocalDate.now(),d)*pricePDay);
        if(price>c.getMoney())
-           throw new Exception("Customer has not enough money");
+           throw new NotEnoughMoney();
+       c.pay(-price);
        borrowTill=d;
        this.c=c;
        
@@ -74,6 +76,10 @@ public class Vehicle {
         return borrowTill;
     }
 
+    public void vehicleBack(){
+        borrowTill=null;
+        c=null;
+    }
     
     
     

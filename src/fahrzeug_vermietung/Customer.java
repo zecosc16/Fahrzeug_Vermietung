@@ -47,6 +47,8 @@ public class Customer {
     
     
     
+    
+    
     public void pay(double amount){
         money+=amount;
     }

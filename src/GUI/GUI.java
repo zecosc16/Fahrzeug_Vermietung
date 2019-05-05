@@ -9,6 +9,8 @@ import BL.CustomerBL;
 import GUI.VehicleDialog;
 import GUI.CustomerDialog;
 import BL.VehicleBL;
+import Exceptions.NotEnoughMoney;
+import Exceptions.VehicleNotAvailable;
 import fahrzeug_vermietung.Customer;
 import fahrzeug_vermietung.Vehicle;
 import java.time.LocalDate;
@@ -47,6 +49,7 @@ public class GUI extends javax.swing.JFrame {
 
         vehiclePopM = new javax.swing.JPopupMenu();
         jMBorrowCar = new javax.swing.JMenuItem();
+        jMVehicleIsBack = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         vehicleList = new javax.swing.JList<>();
         btNewCustomer = new javax.swing.JButton();
@@ -62,6 +65,14 @@ public class GUI extends javax.swing.JFrame {
         });
         vehiclePopM.add(jMBorrowCar);
 
+        jMVehicleIsBack.setText("Vehicle is Back");
+        jMVehicleIsBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMVehicleIsBackActionPerformed(evt);
+            }
+        });
+        vehiclePopM.add(jMVehicleIsBack);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -76,7 +87,6 @@ public class GUI extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -89,6 +99,8 @@ public class GUI extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -101,6 +113,8 @@ public class GUI extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -114,7 +128,7 @@ public class GUI extends javax.swing.JFrame {
         jScrollPane2.setViewportView(costumerList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
@@ -151,12 +165,23 @@ public class GUI extends javax.swing.JFrame {
                 v.borrow(c, d.getDate());
             }
 
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
+        } catch (NotEnoughMoney ex) {
+            JOptionPane.showMessageDialog(null, "Customer has not enough money");
+        } catch (VehicleNotAvailable ex) {
+            JOptionPane.showMessageDialog(null, "Vehicle already borrowed");
+        } catch(ArrayIndexOutOfBoundsException ex){
+            JOptionPane.showMessageDialog(null,"Please select a vehicle and a customer");
+        } 
+        catch (Exception ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
 
     }//GEN-LAST:event_jMBorrowCarActionPerformed
+
+    private void jMVehicleIsBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMVehicleIsBackActionPerformed
+        
+    }//GEN-LAST:event_jMVehicleIsBackActionPerformed
 
     /**
      * @param args the command line arguments
@@ -198,6 +223,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton btNewVehicle;
     private javax.swing.JList<String> costumerList;
     private javax.swing.JMenuItem jMBorrowCar;
+    private javax.swing.JMenuItem jMVehicleIsBack;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList<String> vehicleList;
