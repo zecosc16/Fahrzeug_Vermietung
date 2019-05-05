@@ -39,6 +39,7 @@ public class VehicleBL extends AbstractListModel{
     }
     
     public Vehicle get(int idx){
+        System.out.println("size:"+vehicle.size()+" idx:"+idx);
         return vehicle.get(idx);
     }
 }

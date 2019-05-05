@@ -13,6 +13,8 @@ import fahrzeug_vermietung.Customer;
 import fahrzeug_vermietung.Vehicle;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -24,10 +26,9 @@ public class GUI extends javax.swing.JFrame {
     /**
      * Creates new form GUI
      */
-    
     private VehicleBL vehicleBL = new VehicleBL();
     private CustomerBL customerBL = new CustomerBL();
-    
+
     public GUI() {
         initComponents();
         costumerList.setModel(customerBL);
@@ -126,25 +127,35 @@ public class GUI extends javax.swing.JFrame {
     private void btNewCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewCustomerActionPerformed
         CustomerDialog d = new CustomerDialog(this, true);
         d.setVisible(true);
-        if(d.isOk()){
-            customerBL.add(d.getName(),d.getGebDat(),d.getTelNumber(),d.getMoney());
+        if (d.isOk()) {
+            customerBL.add(d.getName(), d.getGebDat(), d.getTelNumber(), d.getMoney());
         }
     }//GEN-LAST:event_btNewCustomerActionPerformed
 
     private void btNewVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewVehicleActionPerformed
         VehicleDialog dia = new VehicleDialog(this, true);
         dia.setVisible(true);
-        if(dia.isOk()){
-            vehicleBL.add(dia.getName(),dia.getBrand(),dia.getPricePDay(),dia.getAmount());
+        if (dia.isOk()) {
+            vehicleBL.add(dia.getName(), dia.getBrand(), dia.getPricePDay(), dia.getAmount());
         }
     }//GEN-LAST:event_btNewVehicleActionPerformed
 
     private void jMBorrowCarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMBorrowCarActionPerformed
-        int idx=vehicleList.getSelectedIndex();
-        Vehicle v = vehicleBL.get(idx);
-        Customer c = customerBL.get(costumerList.getSelectedIndex());
-        
-        v.borrow(c, );
+        int idx = vehicleList.getSelectedIndex();
+        try {
+            Vehicle v = vehicleBL.get(idx);
+            Customer c = customerBL.get(costumerList.getSelectedIndex());
+            DateDialog d = new DateDialog(this, true);
+            d.setVisible(true);
+            if (d.isOk()) {
+                v.borrow(c, d.getDate());
+            }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+
+
     }//GEN-LAST:event_jMBorrowCarActionPerformed
 
     /**

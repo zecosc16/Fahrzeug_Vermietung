@@ -6,6 +6,8 @@
 package GUI;
 
 import java.time.LocalDate;
+import java.time.Month;
+import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 
 /**
@@ -22,8 +24,11 @@ public class DateDialog extends javax.swing.JDialog {
         initComponents();
         jSDay.setModel(new SpinnerNumberModel(LocalDate.now().getDayOfMonth()+1,1, 31, 1));
         jSMonth.setModel(new SpinnerNumberModel(LocalDate.now().getMonthValue(), 1, 12, 1));
-        jSMonth.setModel(new SpinnerNumberModel(LocalDate.now().getYear(), LocalDate.now().getYear(), LocalDate.now().getYear()+50, 1));
+        jSYear.setModel(new SpinnerNumberModel(LocalDate.now().getYear(), LocalDate.now().getYear(), LocalDate.now().getYear()+50, 1));
     }
+    
+    private boolean ok;
+    private LocalDate date;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -88,6 +93,11 @@ public class DateDialog extends javax.swing.JDialog {
         getContentPane().add(btOK, gridBagConstraints);
 
         btCancel.setText("Cancel");
+        btCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCancelActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -110,8 +120,28 @@ public class DateDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOKActionPerformed
-        // TODO add your handling code here:
+
+        date= LocalDate.of((int)jSYear.getValue(), (int)jSMonth.getValue(), (int)jSDay.getValue());
+        if(LocalDate.now().isAfter(date)){
+            JOptionPane.showMessageDialog(null,"You have to enter a suitable date");
+        }
+        else{
+            this.dispose();
+            ok=true;
+        }
     }//GEN-LAST:event_btOKActionPerformed
+
+    private void btCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btCancelActionPerformed
+
+    public boolean isOk() {
+        return ok;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
 
     /**
      * @param args the command line arguments

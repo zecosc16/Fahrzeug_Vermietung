@@ -7,6 +7,7 @@ package fahrzeug_vermietung;
  */
 
 
+import Exceptions.VehicleNotAvailable;
 import fahrzeug_vermietung.*;
 import java.time.LocalDate;
 import java.time.Month;
@@ -44,7 +45,7 @@ public class Vehicle {
     
     public void borrow(Customer c,LocalDate d) throws Exception{
         if(this.borrowTill!=null)
-            throw new Exception("Vehicle is already borrowed");
+            throw new VehicleNotAvailable();
        double price = (double) (ChronoUnit.DAYS.between( LocalDate.now(),d)*pricePDay);
        if(price>c.getMoney())
            throw new Exception("Customer has not enough money");
