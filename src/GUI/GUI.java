@@ -50,6 +50,8 @@ public class GUI extends javax.swing.JFrame {
         vehiclePopM = new javax.swing.JPopupMenu();
         jMBorrowCar = new javax.swing.JMenuItem();
         jMVehicleIsBack = new javax.swing.JMenuItem();
+        customerPopM = new javax.swing.JPopupMenu();
+        jMPayIn = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         vehicleList = new javax.swing.JList<>();
         btNewCustomer = new javax.swing.JButton();
@@ -72,6 +74,14 @@ public class GUI extends javax.swing.JFrame {
             }
         });
         vehiclePopM.add(jMVehicleIsBack);
+
+        jMPayIn.setText("Pay in");
+        jMPayIn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMPayInActionPerformed(evt);
+            }
+        });
+        customerPopM.add(jMPayIn);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -125,6 +135,7 @@ public class GUI extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        costumerList.setComponentPopupMenu(customerPopM);
         jScrollPane2.setViewportView(costumerList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -180,8 +191,17 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jMBorrowCarActionPerformed
 
     private void jMVehicleIsBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMVehicleIsBackActionPerformed
+        Vehicle v=vehicleBL.get(vehicleList.getSelectedIndex());
+        v.vehicleBack();
         
     }//GEN-LAST:event_jMVehicleIsBackActionPerformed
+
+    private void jMPayInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMPayInActionPerformed
+        
+        int amount = Integer.parseInt(JOptionPane.showInputDialog("How much do you want to pay in?"));
+         Customer c = customerBL.get(costumerList.getSelectedIndex());
+         c.pay(amount);
+    }//GEN-LAST:event_jMPayInActionPerformed
 
     /**
      * @param args the command line arguments
@@ -222,7 +242,9 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton btNewCustomer;
     private javax.swing.JButton btNewVehicle;
     private javax.swing.JList<String> costumerList;
+    private javax.swing.JPopupMenu customerPopM;
     private javax.swing.JMenuItem jMBorrowCar;
+    private javax.swing.JMenuItem jMPayIn;
     private javax.swing.JMenuItem jMVehicleIsBack;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
