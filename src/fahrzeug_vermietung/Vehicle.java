@@ -20,7 +20,6 @@ import java.time.temporal.ChronoUnit;
  */
 public class Vehicle {
 
-    private int vID;
     private CarBrands brand;
     private String name;
     private double pricePDay;
@@ -29,8 +28,7 @@ public class Vehicle {
     
     
 
-    public Vehicle(String name,int vID, CarBrands brand, double pricePDay) {
-        this.vID = vID;
+    public Vehicle(String name, CarBrands brand, double pricePDay) {
         this.brand = brand;
         this.name = name;
         this.pricePDay = pricePDay;
@@ -56,10 +54,7 @@ public class Vehicle {
        
     }
 
-    public int getvID() {
-        return vID;
-    }
-
+   
     public CarBrands getBrand() {
         return brand;
     }

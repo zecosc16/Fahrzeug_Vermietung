@@ -17,7 +17,6 @@ import javax.swing.AbstractListModel;
 public class VehicleBL extends AbstractListModel{
 
     private ArrayList<Vehicle> vehicle = new ArrayList<>();
-    private int vID=1;
     
     @Override
     public int getSize() {
@@ -31,8 +30,7 @@ public class VehicleBL extends AbstractListModel{
     
     public void add(String name, CarBrands brand, double pricePDay, int amount){
         for (int i = 0; i < amount; i++) {
-            vehicle.add(new Vehicle(name, vID, brand, pricePDay));
-            vID++;
+            vehicle.add(new Vehicle(name, brand, pricePDay));
             
         }
         fireIntervalAdded(this, vehicle.size(), vehicle.size());

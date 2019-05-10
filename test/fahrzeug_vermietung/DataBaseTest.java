@@ -44,7 +44,7 @@ public class DataBaseTest {
     public void testGetInstance() throws Exception {
         System.out.println("getInstance");
         DataBase expResult = DataBase.getInstance();
-        expResult.listAllDepartments();
+        expResult.add();
         assertEquals(true, true);
     }
     
