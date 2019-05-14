@@ -5,6 +5,7 @@
  */
 package fahrzeug_vermietung;
 
+import java.time.LocalDate;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -44,7 +45,8 @@ public class DataBaseTest {
     public void testGetInstance() throws Exception {
         System.out.println("getInstance");
         DataBase expResult = DataBase.getInstance();
-        expResult.add();
+        int r=expResult.addVehicle("hallo",21,LocalDate.now(),CarBrands.Audi);
+        System.out.println(""+r);
         assertEquals(true, true);
     }
     

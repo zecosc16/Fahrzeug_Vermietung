@@ -18,7 +18,7 @@ public class Customer {
     private LocalDate gebDat;
     private String telNum;
     private double money;
-    private int custID;
+    private final int custID;
 
     public Customer(String name, LocalDate gebDat, String telNum, double money,int custID) {
         this.name = name;

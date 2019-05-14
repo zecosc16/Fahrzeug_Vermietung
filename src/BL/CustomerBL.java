@@ -17,6 +17,14 @@ import javax.swing.AbstractListModel;
 public class CustomerBL extends AbstractListModel{
         private ArrayList<Customer> customers= new ArrayList<>();
         private int custID=1;
+
+    public ArrayList<Customer> getCustomers() {
+        return customers;
+    }
+
+    public int getCustID() {
+        return custID;
+    }
         
     @Override
     public int getSize() {
@@ -28,7 +36,7 @@ public class CustomerBL extends AbstractListModel{
         return customers.get(index);
     }
     
-    public void add(String name, LocalDate gebDat, String telNum, double money){
+    public void add(String name, LocalDate gebDat, String telNum, double money,int cID){
         customers.add(new Customer(name, gebDat, telNum, money, custID));
         custID++;
         fireIntervalAdded(this, customers.size(), customers.size());

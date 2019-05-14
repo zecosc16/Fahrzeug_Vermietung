@@ -5,6 +5,8 @@
  */
 package fahrzeug_vermietung;
 
+import BL.CustomerBL;
+import BL.VehicleBL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -43,25 +45,50 @@ public class DataBase {
         return theInstance;
     }
 
-    public void addVehicle(String name, int pricePDay, LocalDate d, CarBrands c) throws SQLException {
+    public int addVehicle(String name, int pricePDay,  CarBrands c) throws SQLException {
         Statement stat = conn.createStatement();
 
-        if (d != null) {
-            String sqlString = String.format("INSERT INTO public.\"Vehicle\"(name, \"pricePDay\", \"borrowTill\", \"CarBrand\")VALUES (\'%s\',%d,TO_DATE(\'%s\','YYYY-MM-DD'),\'%s\');", name, pricePDay, d, c);
-            stat.executeUpdate(sqlString);
-        } else {
-            String sqlString = String.format("INSERT INTO public.\"Vehicle\"(name, \"pricePDay\",  \"CarBrand\")VALUES (\'%s\',%d,\'%s\');", name, pricePDay, c);
-            stat.executeUpdate(sqlString);
-        }
+        String sqlString = String.format("INSERT INTO public.\"Vehicle\"(name, \"pricePDay\",  \"CarBrand\")VALUES (\'%s\',%d,\'%s\');", name, pricePDay, c);
+        stat.executeUpdate(sqlString);
+
+        String getID = "SELECT \"vID\" FROM public.\"Vehicle\"  ORDER BY \"vID\" DESC LIMIT 1;";
+        ResultSet r = stat.executeQuery(getID);
+        r.next();
+        int vID = r.getInt("vID");
 
         stat.close();
-
+        return vID;
     }
+//    public int addVehicle(String name, int pricePDay,LocalDate d,CarBrands c) throws SQLException {
+//        Statement stat = conn.createStatement();
+//
+//        if (d != null) {
+//            String sqlString = String.format("INSERT INTO public.\"Vehicle\"(name, \"pricePDay\", \"borrowTill\", \"CarBrand\")VALUES (\'%s\',%d,TO_DATE(\'%s\','YYYY-MM-DD'),\'%s\');", name, pricePDay, d, c);
+//            stat.executeUpdate(sqlString);
+//        } else {
+//            String sqlString = String.format("INSERT INTO public.\"Vehicle\"(name, \"pricePDay\",  \"CarBrand\")VALUES (\'%s\',%d,\'%s\');", name, pricePDay, c);
+//            stat.executeUpdate(sqlString);
+//        }
+//
+//        String getID = "SELECT \"vID\" FROM public.\"Vehicle\"  ORDER BY \"vID\" DESC LIMIT 1;";
+//        ResultSet r = stat.executeQuery(getID);
+//        r.next();
+//        int vID = r.getInt("vID");
+//        
+//        stat.close();
+//        return vID;
+//    }
 
-    public ArrayList<Vehicle> getVehicles() throws SQLException {
+    
+    public void initialize(VehicleBL vehicles, CustomerBL customers) throws SQLException{
+        this.getVehicles(vehicles, customers);
+    }
+    
+    
+    public void getVehicles(VehicleBL bl,CustomerBL customers) throws SQLException {
         CarBrands c = CarBrands.Audi;
 
-        ArrayList<Vehicle> vehicles = new ArrayList<>();
+       
         Statement stat = conn.createStatement();
         String s = "SELECT name, \"pricePDay\", \"borrowTill\", \"vID\", \"CarBrand\", \"custID\" FROM public.\"Vehicle\"";
         ResultSet res = stat.executeQuery(s);
@@ -70,24 +97,31 @@ public class DataBase {
         while (res.next()) {
 
             if (res.getDate("borrowTill") == null) {
-                vehicles.add(new Vehicle(res.getString("name"), c.whichBrand(res.getString("CarBrand")), res.getDouble("pricePDay")));
+                bl.add(res.getString("name"), c.whichBrand(res.getString("CarBrand")), res.getDouble("pricePDay"),res.getInt("vID"));
             } else {
-                vehicles.add(new Vehicle(c.whichBrand(res.getString("CarBrand")), res.getString("name"), res.getDouble("pricePDay"), res.getDate("borrowTill").toLocalDate(), c));
+                bl.add(c.whichBrand(res.getString("CarBrand")), res.getString("name"), res.getDouble("pricePDay"), res.getDate("borrowTill").toLocalDate(),customers.get(res.getInt("custID")),res.getInt("vID"));
             }
 
         }
 
         stat.close();
-        return vehicles;
+        
     }
 
-    public void addCustomer(Customer c) throws SQLException {
+    public int addCustomer(String name, LocalDate gebDat, String telNum, double money) throws SQLException {
         Statement stat = conn.createStatement();
-        String sqlString = String.format("INSERT INTO public.\"Customer\"(\"telNum\", money, \"gebDat\", name)VALUES (\'%s\', %d, TO_DATE(\'%s\','YYYY-MM-DD'),\'%s\')",c.getTelNum(),(int)c.getMoney(),c.getGebDat(),c.getName());
+        String sqlString = String.format("INSERT INTO public.\"Customer\"(\"telNum\", money, \"gebDat\", name)VALUES (\'%s\', %d, TO_DATE(\'%s\','YYYY-MM-DD'),\'%s\')",telNum, (int) money, gebDat, name);
         stat.executeUpdate(sqlString);
+        
+//        String getID = "SELECT \"cID\" FROM public.\"Customer\"  ORDER BY \"cID\" DESC LIMIT 1;";
+//        ResultSet r = stat.executeQuery(getID);
+//        r.next();
+//        int cID = r.getInt("cID");
+        
+        
         stat.close();
+        
+        return 0;
     }
-    
-    
 
 }

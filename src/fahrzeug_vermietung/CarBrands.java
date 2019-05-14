@@ -16,7 +16,7 @@ public enum CarBrands {
     
     public CarBrands whichBrand(String name){
         switch(name){
-            case "BWM":
+            case "BMW":
                 return CarBrands.BMW;
             case "VW":
                 return CarBrands.VW;

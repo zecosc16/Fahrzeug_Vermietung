@@ -11,8 +11,11 @@ import GUI.CustomerDialog;
 import BL.VehicleBL;
 import Exceptions.NotEnoughMoney;
 import Exceptions.VehicleNotAvailable;
+import fahrzeug_vermietung.CarBrands;
 import fahrzeug_vermietung.Customer;
+import fahrzeug_vermietung.DataBase;
 import fahrzeug_vermietung.Vehicle;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -30,11 +33,24 @@ public class GUI extends javax.swing.JFrame {
      */
     private VehicleBL vehicleBL = new VehicleBL();
     private CustomerBL customerBL = new CustomerBL();
+    private DataBase database;
 
     public GUI() {
         initComponents();
         costumerList.setModel(customerBL);
         vehicleList.setModel(vehicleBL);
+        try {
+            database = DataBase.getInstance();
+        } catch (SQLException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            database.initialize(vehicleBL, customerBL);
+        } catch (SQLException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     /**
@@ -96,7 +112,7 @@ public class GUI extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -110,7 +126,7 @@ public class GUI extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -124,7 +140,7 @@ public class GUI extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -140,7 +156,7 @@ public class GUI extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -151,9 +167,17 @@ public class GUI extends javax.swing.JFrame {
 
     private void btNewCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btNewCustomerActionPerformed
         CustomerDialog d = new CustomerDialog(this, true);
+        
         d.setVisible(true);
         if (d.isOk()) {
-            customerBL.add(d.getName(), d.getGebDat(), d.getTelNumber(), d.getMoney());
+            int cID;
+            try {
+                cID = database.addCustomer(d.getName(), d.getGebDat(), d.getTelNumber(), d.getMoney());
+                customerBL.add(d.getName(), d.getGebDat(), d.getTelNumber(), d.getMoney(),cID);
+            } catch (SQLException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         }
     }//GEN-LAST:event_btNewCustomerActionPerformed
 
@@ -161,7 +185,12 @@ public class GUI extends javax.swing.JFrame {
         VehicleDialog dia = new VehicleDialog(this, true);
         dia.setVisible(true);
         if (dia.isOk()) {
-            vehicleBL.add(dia.getName(), dia.getBrand(), dia.getPricePDay(), dia.getAmount());
+            try {
+                int vID = database.addVehicle(dia.getName(), (int) dia.getPricePDay(), dia.getBrand());
+                vehicleBL.add(dia.getName(), dia.getBrand(), dia.getPricePDay(), vID);
+            } catch (SQLException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_btNewVehicleActionPerformed
 
@@ -180,27 +209,22 @@ public class GUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Customer has not enough money");
         } catch (VehicleNotAvailable ex) {
             JOptionPane.showMessageDialog(null, "Vehicle already borrowed");
-        } catch(ArrayIndexOutOfBoundsException ex){
-            JOptionPane.showMessageDialog(null,"Please select a vehicle and a customer");
-        } 
-        catch (Exception ex) {
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            JOptionPane.showMessageDialog(null, "Please select a vehicle and a customer");
+        } catch (Exception ex) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-
     }//GEN-LAST:event_jMBorrowCarActionPerformed
 
     private void jMVehicleIsBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMVehicleIsBackActionPerformed
-        Vehicle v=vehicleBL.get(vehicleList.getSelectedIndex());
+        Vehicle v = vehicleBL.get(vehicleList.getSelectedIndex());
         v.vehicleBack();
-        
     }//GEN-LAST:event_jMVehicleIsBackActionPerformed
 
     private void jMPayInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMPayInActionPerformed
-        
         int amount = Integer.parseInt(JOptionPane.showInputDialog("How much do you want to pay in?"));
-         Customer c = customerBL.get(costumerList.getSelectedIndex());
-         c.pay(amount);
+        Customer c = customerBL.get(costumerList.getSelectedIndex());
+        c.pay(amount);
     }//GEN-LAST:event_jMPayInActionPerformed
 
     /**

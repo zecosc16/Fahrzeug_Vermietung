@@ -26,7 +26,7 @@ public class VehicleDialog extends javax.swing.JDialog {
     
     
     
-    private int amount;
+
     private boolean ok;
     
     private CarBrands brand;
@@ -50,11 +50,6 @@ public class VehicleDialog extends javax.swing.JDialog {
     }
 
     
-
-    public int getAmount() {
-        return amount;
-    }
-    
     
 
     /**
@@ -70,10 +65,8 @@ public class VehicleDialog extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         tfVehicleName = new javax.swing.JTextField();
         cbBrand = new javax.swing.JComboBox<>();
-        jSPAmount = new javax.swing.JSpinner();
         btOK = new javax.swing.JButton();
         btCancel = new javax.swing.JButton();
         jSPPricePDay = new javax.swing.JSpinner();
@@ -106,15 +99,6 @@ public class VehicleDialog extends javax.swing.JDialog {
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(jLabel3, gridBagConstraints);
 
-        jLabel4.setText("amount:");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jLabel4, gridBagConstraints);
-
         tfVehicleName.setText("Golf ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -129,15 +113,6 @@ public class VehicleDialog extends javax.swing.JDialog {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(cbBrand, gridBagConstraints);
-
-        jSPAmount.setModel(new javax.swing.SpinnerNumberModel(1, 1, 100, 1));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.weighty = 1.0;
-        getContentPane().add(jSPAmount, gridBagConstraints);
 
         btOK.setText("OK");
         btOK.addActionListener(new java.awt.event.ActionListener() {
@@ -184,8 +159,6 @@ public class VehicleDialog extends javax.swing.JDialog {
         this.brand=(CarBrands) cbBrand.getSelectedItem();
         name=tfVehicleName.getText();
         pricePDay=(double) jSPPricePDay.getValue();
-        amount=(int)  jSPAmount.getValue();
-        System.out.println(""+amount);
         this.dispose();
     }//GEN-LAST:event_btOKActionPerformed
 
@@ -244,8 +217,6 @@ public class VehicleDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JSpinner jSPAmount;
     private javax.swing.JSpinner jSPPricePDay;
     private javax.swing.JTextField tfVehicleName;
     // End of variables declaration//GEN-END:variables
