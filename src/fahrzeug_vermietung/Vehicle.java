@@ -20,18 +20,29 @@ import java.time.temporal.ChronoUnit;
  */
 public class Vehicle {
 
+    public Vehicle(CarBrands brand, String name, double pricePDay, LocalDate borrowTill, Customer c,int viD) {
+        this.brand = brand;
+        this.name = name;
+        this.pricePDay = pricePDay;
+        this.borrowTill = borrowTill;
+        this.c = c;
+        this.viD=viD;
+    }
+
     private CarBrands brand;
     private String name;
     private double pricePDay;
     private LocalDate borrowTill;
     private Customer c;
+    private final int viD;
     
     
 
-    public Vehicle(String name, CarBrands brand, double pricePDay) {
+    public Vehicle(String name, CarBrands brand, double pricePDay,int viD) {
         this.brand = brand;
         this.name = name;
         this.pricePDay = pricePDay;
+        this.viD=viD;
     }
 
     @Override
@@ -39,6 +50,7 @@ public class Vehicle {
         boolean t=true;
         if(borrowTill!= null)
             t=false;
+        
         return String.format("%s %s available: %s", brand,name,t);
     }
     
@@ -63,8 +75,8 @@ public class Vehicle {
         return name;
     }
 
-    public double getPricePDay() {
-        return pricePDay;
+    public int getPricePDay() {
+        return (int) pricePDay;
     }
 
     public LocalDate getBorrowTill() {

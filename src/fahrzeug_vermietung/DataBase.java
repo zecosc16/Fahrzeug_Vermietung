@@ -10,8 +10,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.naming.spi.DirStateFactory.Result;
 
 /**
  *
@@ -22,7 +25,7 @@ public class DataBase {
     private Connection conn;
     private static DataBase theInstance;
 
-    private DataBase() throws SQLException {
+    public DataBase() throws SQLException {
         try {
 
             Class.forName("org.postgresql.Driver");
@@ -40,26 +43,51 @@ public class DataBase {
         return theInstance;
     }
 
-    public void listAllDepartments() throws SQLException {
+    public void addVehicle(String name, int pricePDay, LocalDate d, CarBrands c) throws SQLException {
         Statement stat = conn.createStatement();
-        String sqlString = "SELECT * FROM Vehicle";
-        ResultSet res = stat.executeQuery(sqlString);
-        while (res.next()) {
-            System.out.println("" + res.getString("empno"));
-        }
-    }
 
-    public void add() {
-        Statement stat;
-        try {
-            stat = conn.createStatement();
-
-            String sqlString = "INSERT INTO public.\"Vehicle\"( \"name\", \"pricePDay\", \"borrowTill\")VALUES ('halo',20,TO_DATE('20.02.1981','DD.MM.YY'))";;
-            
+        if (d != null) {
+            String sqlString = String.format("INSERT INTO public.\"Vehicle\"(name, \"pricePDay\", \"borrowTill\", \"CarBrand\")VALUES (\'%s\',%d,TO_DATE(\'%s\','YYYY-MM-DD'),\'%s\');", name, pricePDay, d, c);
             stat.executeUpdate(sqlString);
-            
-        } catch (Exception ex) {
-            System.out.println("" + ex.getMessage());
+        } else {
+            String sqlString = String.format("INSERT INTO public.\"Vehicle\"(name, \"pricePDay\",  \"CarBrand\")VALUES (\'%s\',%d,\'%s\');", name, pricePDay, c);
+            stat.executeUpdate(sqlString);
         }
+
+        stat.close();
+
     }
+
+    public ArrayList<Vehicle> getVehicles() throws SQLException {
+        CarBrands c = CarBrands.Audi;
+
+        ArrayList<Vehicle> vehicles = new ArrayList<>();
+        Statement stat = conn.createStatement();
+        String s = "SELECT name, \"pricePDay\", \"borrowTill\", \"vID\", \"CarBrand\", \"custID\" FROM public.\"Vehicle\"";
+        ResultSet res = stat.executeQuery(s);
+
+        Vehicle v;
+        while (res.next()) {
+
+            if (res.getDate("borrowTill") == null) {
+                vehicles.add(new Vehicle(res.getString("name"), c.whichBrand(res.getString("CarBrand")), res.getDouble("pricePDay")));
+            } else {
+                vehicles.add(new Vehicle(c.whichBrand(res.getString("CarBrand")), res.getString("name"), res.getDouble("pricePDay"), res.getDate("borrowTill").toLocalDate(), c));
+            }
+
+        }
+
+        stat.close();
+        return vehicles;
+    }
+
+    public void addCustomer(Customer c) throws SQLException {
+        Statement stat = conn.createStatement();
+        String sqlString = String.format("INSERT INTO public.\"Customer\"(\"telNum\", money, \"gebDat\", name)VALUES (\'%s\', %d, TO_DATE(\'%s\','YYYY-MM-DD'),\'%s\')",c.getTelNum(),(int)c.getMoney(),c.getGebDat(),c.getName());
+        stat.executeUpdate(sqlString);
+        stat.close();
+    }
+    
+    
+
 }

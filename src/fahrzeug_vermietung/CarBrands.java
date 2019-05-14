@@ -11,4 +11,26 @@ package fahrzeug_vermietung;
  */
 public enum CarBrands {
     BMW,VW,Mercedes,Fiat,Tesla,Audi,Ford;
+    
+    
+    
+    public CarBrands whichBrand(String name){
+        switch(name){
+            case "BWM":
+                return CarBrands.BMW;
+            case "VW":
+                return CarBrands.VW;
+            case "Mercedes":
+                return CarBrands.Mercedes;
+            case "Fiat":
+                return CarBrands.Fiat;
+            case "Tesla":
+                return CarBrands.Tesla;
+            case "Audi":
+                return CarBrands.Audi;
+            case "Ford":
+                return CarBrands.Ford;
+        }
+        return null;
+    }
 }
