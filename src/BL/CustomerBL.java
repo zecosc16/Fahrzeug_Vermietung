@@ -16,15 +16,12 @@ import javax.swing.AbstractListModel;
  */
 public class CustomerBL extends AbstractListModel{
         private ArrayList<Customer> customers= new ArrayList<>();
-        private int custID=1;
 
     public ArrayList<Customer> getCustomers() {
         return customers;
     }
 
-    public int getCustID() {
-        return custID;
-    }
+
         
     @Override
     public int getSize() {
@@ -37,8 +34,7 @@ public class CustomerBL extends AbstractListModel{
     }
     
     public void add(String name, LocalDate gebDat, String telNum, double money,int cID){
-        customers.add(new Customer(name, gebDat, telNum, money, custID));
-        custID++;
+        customers.add(new Customer(name, gebDat, telNum, money, cID));
         fireIntervalAdded(this, customers.size(), customers.size());
     }
 
@@ -46,6 +42,17 @@ public class CustomerBL extends AbstractListModel{
         return customers.get(idx);
     }
     
+    public Customer getCWID(int id) throws Exception{
+        for (Customer customer : customers) {
+            if(customer.getCustID()==id)
+                return customer;
+        }
+        throw new Exception("FK of vehicle is false(custID)");
+    }
+    
+    public void update(){
+        fireContentsChanged(this, 0, customers.size());
+    }
     
     
 }

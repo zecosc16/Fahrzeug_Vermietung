@@ -14,6 +14,8 @@ import java.time.LocalDate;
  */
 public class Customer {
     private String name;
+
+    
     
     private LocalDate gebDat;
     private String telNum;
@@ -44,7 +46,9 @@ public class Customer {
         return money;
     }
     
-    
+    public int getCustID() {
+        return custID;
+    }
     
     
     

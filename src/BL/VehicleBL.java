@@ -45,4 +45,8 @@ public class VehicleBL extends AbstractListModel {
         vehicle.add(new Vehicle(whichBrand, string, aDouble, toLocalDate, get, vID));
         fireIntervalAdded(this, vehicle.size(), vehicle.size());
     }
+    
+    public void update(){
+        fireContentsChanged(this, 0, vehicle.size());
+    }
 }

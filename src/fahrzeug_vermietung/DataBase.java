@@ -45,6 +45,16 @@ public class DataBase {
         return theInstance;
     }
 
+    /**
+     * the method adds the Vehicle to the Database and return the fk(the Vehicle
+     * id)
+     *
+     * @param name
+     * @param pricePDay
+     * @param
+     * @return
+     * @throws SQLException
+     */
     public int addVehicle(String name, int pricePDay, CarBrands c) throws SQLException {
         Statement stat = conn.createStatement();
 
@@ -79,12 +89,14 @@ public class DataBase {
 //        return vID;
 //    }
 
-    public void initialize(VehicleBL vehicles, CustomerBL customers) throws SQLException {
-        this.getVehicles(vehicles, customers);
+    public void initialize(VehicleBL vehicles, CustomerBL customers) throws SQLException, Exception {
+
         this.getCustomers(customers);
+        this.getVehicles(vehicles, customers);
+
     }
 
-    public void getVehicles(VehicleBL bl, CustomerBL customers) throws SQLException {
+    public void getVehicles(VehicleBL bl, CustomerBL customers) throws SQLException, Exception {
         CarBrands c = CarBrands.Audi;
 
         Statement stat = conn.createStatement();
@@ -97,7 +109,8 @@ public class DataBase {
             if (res.getDate("borrowTill") == null) {
                 bl.add(res.getString("name"), c.whichBrand(res.getString("CarBrand")), res.getDouble("pricePDay"), res.getInt("vID"));
             } else {
-                bl.add(c.whichBrand(res.getString("CarBrand")), res.getString("name"), res.getDouble("pricePDay"), res.getDate("borrowTill").toLocalDate(), customers.get(res.getInt("custID")), res.getInt("vID"));
+
+                bl.add(c.whichBrand(res.getString("CarBrand")), res.getString("name"), res.getDouble("pricePDay"), res.getDate("borrowTill").toLocalDate(), customers.getCWID(res.getInt("custID")), res.getInt("vID"));
             }
 
         }
@@ -109,8 +122,7 @@ public class DataBase {
         Statement stat = conn.createStatement();
         String s = "SELECT \"telNum\", money, \"gebDat\", name, \"cID\" FROM public.\"Customer\";";
         ResultSet res = stat.executeQuery(s);
-        while(res.next()){
-//            System.out.println(res.getDate("gebDat").toLocalDate());
+        while (res.next()) {
             customers.add(res.getString("name"), res.getDate("gebDat").toLocalDate(), res.getString("telNum"), res.getInt("money"), res.getInt("cID"));
         }
         stat.close();
@@ -121,13 +133,49 @@ public class DataBase {
         String sqlString = String.format("INSERT INTO public.\"Customer\"(\"telNum\", money, \"gebDat\", name)VALUES (\'%s\', %d, TO_DATE(\'%s\','YYYY-MM-DD'),\'%s\')", telNum, (int) money, gebDat, name);
         stat.executeUpdate(sqlString);
 
-//        String getID = "SELECT \"cID\" FROM public.\"Customer\"  ORDER BY \"cID\" DESC LIMIT 1;";
-//        ResultSet r = stat.executeQuery(getID);
-//        r.next();
-//        int cID = r.getInt("cID");
-        stat.close();
+        String getID = "SELECT \"cID\" FROM public.\"Customer\"  ORDER BY \"cID\" DESC LIMIT 1;";
+        ResultSet r = stat.executeQuery(getID);
 
-        return 0;
+        r.next();
+        int cID = r.getInt("cID");
+        stat.close();
+        return cID;
+
     }
 
+    public void VehicleBorrowed(Vehicle v, Customer c) throws SQLException {
+        Statement stat = conn.createStatement();
+
+        String ve = String.format("UPDATE public.\"Vehicle\" SET \"borrowTill\"=TO_DATE(\'%s\','YYYY-MM-DD'),\"custID\"=%d WHERE \"vID\"=%d;", v.getBorrowTill(), v.getCustomer().getCustID(), v.getVID());
+        stat.executeUpdate(ve);
+
+//        String cu = String.format("UPDATE public.\"Customer\" SET \"money\"=%d WHERE \"cID\"=%d;",(int) c.getMoney(), c.getCustID());
+//        stat.executeUpdate(cu);
+        stat.close();
+    }
+
+    public void updateCustomer(Customer c) throws SQLException {
+        Statement stat = conn.createStatement();
+        String cu = String.format("UPDATE public.\"Customer\" SET \"telNum\"=%s, money=%d, \"gebDat\"=TO_DATE(\'%s\','YYYY-MM-DD') WHERE \"cID\"=%d;", c.getTelNum(), (int) c.getMoney(), c.getGebDat(), c.getCustID());
+        stat.executeUpdate(cu);
+        stat.close();
+    }
+
+    public void updateVehicle(Vehicle v) throws SQLException {
+        Statement stat = conn.createStatement();
+        String ve;
+        if (v.getBorrowTill() == null) {
+            System.out.println("true");
+            ve = String.format("UPDATE public.\"Vehicle\" SET name='%s', \"pricePDay\"=%d, \"borrowTill\"=NULL, \"CarBrand\"='%s', \"custID\"=NULL WHERE \"vID\"=%d;", v.getName(), (int) v.getPricePDay(), v.getBrand(), v.getVID());
+        } else //            ve = String.format("UPDATE public.\"Vehicle\" SET name=%s, \"pricePDay\"=%d, \"borrowTill\"=TO_DATE(\'%s\','YYYY-MM-DD'), \"CarBrand\"=%s, \"custID\"=%d WHERE \"vID\"=%d;", v.getName(),(int)v.getPricePDay(),v.getBorrowTill(),v.getBrand(),v.getCustomer().getCustID(),v.getVID());
+        {
+            ve = String.format("UPDATE public.\"Vehicle\" SET  \"pricePDay\"=%d, \"borrowTill\"=TO_DATE(\'%s\','YYYY-MM-DD'), \"custID\"=%d WHERE \"vID\"=%d;", (int) v.getPricePDay(), v.getBorrowTill(), v.getCustomer().getCustID(), v.getVID());
+        }
+
+        stat.executeUpdate(ve);
+        stat.close();
+    }
+
+    
+    
 }
