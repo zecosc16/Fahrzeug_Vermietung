@@ -328,13 +328,20 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jMDeleteCustomerActionPerformed
 
     private void jMExportDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMExportDataActionPerformed
-        JFileChooser jf = new JFileChooser();
-        jf.showOpenDialog(this);
+//        JFileChooser jf = new JFileChooser();
+//        jf.showOpenDialog(this);
         
         try {
-            vehicleBL.export(jf.getSelectedFile());
+//            vehicleBL.export(jf.getSelectedFile());
+         vehicleBL.export();
         } catch (IOException ex) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch(NullPointerException ex){
+            
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
         }
     }//GEN-LAST:event_jMExportDataActionPerformed
 

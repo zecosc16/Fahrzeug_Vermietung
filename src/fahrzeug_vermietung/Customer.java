@@ -7,27 +7,25 @@ import java.time.LocalDate;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author oskar
  */
 public class Customer {
+
     private String name;
 
-    
-    
     private LocalDate gebDat;
     private String telNum;
     private double money;
     private final int custID;
 
-    public Customer(String name, LocalDate gebDat, String telNum, double money,int custID) {
+    public Customer(String name, LocalDate gebDat, String telNum, double money, int custID) {
         this.name = name;
         this.gebDat = gebDat;
         this.telNum = telNum;
         this.money = money;
-        this.custID=custID;
+        this.custID = custID;
     }
 
     public String getName() {
@@ -45,21 +43,21 @@ public class Customer {
     public double getMoney() {
         return money;
     }
-    
+
     public int getCustID() {
         return custID;
     }
-    
-    
-    
-    
-    public void pay(double amount){
-        money+=amount;
+
+    /**
+     * method used for increasing money of customer
+     * @param amount 
+     */
+    public void pay(double amount) {
+        money += amount;
     }
-    
-    
+
     @Override
     public String toString() {
-        return String.format("%d %s has %.2f€",custID,name,money);
+        return String.format("%d %s has %.2f€", custID, name, money);
     }
 }

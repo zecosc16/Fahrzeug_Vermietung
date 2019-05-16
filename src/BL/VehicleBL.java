@@ -42,7 +42,6 @@ public class VehicleBL extends AbstractListModel {
     }
 
     public Vehicle get(int idx) {
-        System.out.println("" + idx);
         return vehicle.get(idx);
     }
 
@@ -51,6 +50,9 @@ public class VehicleBL extends AbstractListModel {
         fireIntervalAdded(this, vehicle.size(), vehicle.size());
     }
 
+    /**
+     * refreshes the list
+     */
     public void update() {
         fireContentsChanged(this, 0, vehicle.size());
     }
@@ -91,8 +93,15 @@ public class VehicleBL extends AbstractListModel {
         return v;
     }
 
-    public void export(File f) throws IOException {
-        BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+    /**
+     * exports all Vehicles into a file
+     *
+     * @param f
+     * @throws IOException
+     * @throws NullPointerException
+     */
+    public void export() throws IOException, NullPointerException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter("./file.csv"));
         for (Vehicle vehicle : vehicle) {
             if (vehicle.getBorrowTill() == null) {
                 bw.write(String.format("%d,%s,%s,%d", vehicle.getVID(), vehicle.getBrand(), vehicle.getName(), vehicle.getPricePDay()));

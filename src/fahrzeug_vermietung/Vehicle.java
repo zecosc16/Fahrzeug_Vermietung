@@ -45,24 +45,31 @@ public class Vehicle {
     public String toString() {
 
         if (borrowTill != null) {
-            return String.format("%d %s %s Price: %.2f is borrowed by %s till %s",vID, brand, name, pricePDay, c.getName(), borrowTill);
+            return String.format("%d %s %s Price: %.2f is borrowed by %s till %s", vID, brand, name, pricePDay, c.getName(), borrowTill);
         }
 
-        return String.format("%d %s %S Price: %.2f ",vID, brand, name, pricePDay);
+        return String.format("%d %s %S Price: %.2f ", vID, brand, name, pricePDay);
     }
 
+    /**
+     * method which is called when the cars is being borrowed and sets the
+     * parameters
+     *
+     * @param c
+     * @param d
+     * @throws Exception
+     */
     public void borrow(Customer c, LocalDate d) throws Exception {
         if (this.borrowTill != null) {
             throw new VehicleNotAvailable();
         }
-        double price = (double) ((ChronoUnit.DAYS.between(LocalDate.now(), d)+1) * pricePDay);
+        double price = (double) ((ChronoUnit.DAYS.between(LocalDate.now(), d) + 1) * pricePDay);
         if (price > c.getMoney()) {
             throw new NotEnoughMoney();
         }
         c.pay(-price);
         borrowTill = d;
         this.c = c;
-
     }
 
     public CarBrands getBrand() {
@@ -80,15 +87,14 @@ public class Vehicle {
     public LocalDate getBorrowTill() {
         return borrowTill;
     }
-    
-    public int getVID(){
+
+    public int getVID() {
         return vID;
     }
-    
-    public Customer getCustomer(){
+
+    public Customer getCustomer() {
         return c;
     }
-    
 
     public void vehicleBack() {
         borrowTill = null;

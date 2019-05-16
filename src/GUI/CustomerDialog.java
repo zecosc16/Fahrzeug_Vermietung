@@ -202,14 +202,14 @@ public class CustomerDialog extends javax.swing.JDialog {
         ok = true;
         name = tfName.getText();
         gebDat = LocalDate.of((int) jSYear.getValue(), (int) jSMonth.getValue(), (int) jSDay.getValue());
-        money=(int) jSMoney.getValue();
-        telNumber=tfTelNumb.getText();
+        money = (int) jSMoney.getValue();
+        telNumber = tfTelNumb.getText();
 
         this.dispose();
     }//GEN-LAST:event_btOKActionPerformed
 
     private void btCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCancelActionPerformed
-        ok=false;
+        ok = false;
         this.dispose();
     }//GEN-LAST:event_btCancelActionPerformed
 

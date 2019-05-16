@@ -16,26 +16,30 @@ import javax.swing.JList;
  *
  * @author oskar
  */
-public class ListCellRenderer implements javax.swing.ListCellRenderer{
+public class ListCellRenderer implements javax.swing.ListCellRenderer {
 
     @Override
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         JLabel label = new JLabel();
         label.setOpaque(true);
         label.setBackground(Color.white);
-        Vehicle v= (Vehicle)value;
-        
+        Vehicle v = (Vehicle) value;
+
         label.setText(v.toString());
-        if(v.getBorrowTill()!=null){
-            if(v.getBorrowTill().isBefore(LocalDate.now()))
+        if (v.getBorrowTill() != null) {
+            if (v.getBorrowTill().isBefore(LocalDate.now())) {
                 label.setBackground(Color.red);
-            else if(v.getBorrowTill().equals(LocalDate.now()))
+            } else if (v.getBorrowTill().equals(LocalDate.now())) {
                 label.setBackground(Color.yellow);
+            }
         }
-        
-        if(isSelected)
-            label.setBackground(Color.blue);
+
+        if (isSelected) {
+            label.setBackground(new Color(57, 105, 138));
+            label.setForeground(Color.white);
+        }
+
         return label;
     }
-    
+
 }

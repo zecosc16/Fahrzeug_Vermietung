@@ -70,7 +70,6 @@ public class DataBase {
         return vID;
     }
 
-
     /**
      * method which is called to load all Objects from the databank
      *
@@ -115,10 +114,12 @@ public class DataBase {
 
         stat.close();
     }
+
     /**
      * method fot getting the customers of the database
+     *
      * @param customers
-     * @throws SQLException 
+     * @throws SQLException
      */
     public void getCustomers(CustomerBL customers) throws SQLException {
         Statement stat = conn.createStatement();
@@ -132,12 +133,13 @@ public class DataBase {
 
     /**
      * adds a Customer to the database and returns the ID of the Object
+     *
      * @param name
      * @param gebDat
      * @param telNum
      * @param money
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     public int addCustomer(String name, LocalDate gebDat, String telNum, double money) throws SQLException {
         Statement stat = conn.createStatement();
@@ -154,17 +156,12 @@ public class DataBase {
 
     }
 
-    public void VehicleBorrowed(Vehicle v, Customer c) throws SQLException {
-        Statement stat = conn.createStatement();
-
-        String ve = String.format("UPDATE public.\"Vehicle\" SET \"borrowTill\"=TO_DATE(\'%s\','YYYY-MM-DD'),\"custID\"=%d WHERE \"vID\"=%d;", v.getBorrowTill(), v.getCustomer().getCustID(), v.getVID());
-        stat.executeUpdate(ve);
-
-//        String cu = String.format("UPDATE public.\"Customer\" SET \"money\"=%d WHERE \"cID\"=%d;",(int) c.getMoney(), c.getCustID());
-//        stat.executeUpdate(cu);
-        stat.close();
-    }
-
+    /**
+     * uploads any changes of the Customer object in the database
+     *
+     * @param c
+     * @throws SQLException
+     */
     public void updateCustomer(Customer c) throws SQLException {
         Statement stat = conn.createStatement();
         String cu = String.format("UPDATE public.\"Customer\" SET \"telNum\"=%s, money=%d, \"gebDat\"=TO_DATE(\'%s\','YYYY-MM-DD') WHERE \"cID\"=%d;", c.getTelNum(), (int) c.getMoney(), c.getGebDat(), c.getCustID());
@@ -172,14 +169,18 @@ public class DataBase {
         stat.close();
     }
 
+    /**
+     * uploads any changes of the Vehicle object in the database
+     *
+     * @param v
+     * @throws SQLException
+     */
     public void updateVehicle(Vehicle v) throws SQLException {
         Statement stat = conn.createStatement();
         String ve;
         if (v.getBorrowTill() == null) {
-            System.out.println("true");
             ve = String.format("UPDATE public.\"Vehicle\" SET name='%s', \"pricePDay\"=%d, \"borrowTill\"=NULL, \"CarBrand\"='%s', \"custID\"=NULL WHERE \"vID\"=%d;", v.getName(), (int) v.getPricePDay(), v.getBrand(), v.getVID());
-        } else //            ve = String.format("UPDATE public.\"Vehicle\" SET name=%s, \"pricePDay\"=%d, \"borrowTill\"=TO_DATE(\'%s\','YYYY-MM-DD'), \"CarBrand\"=%s, \"custID\"=%d WHERE \"vID\"=%d;", v.getName(),(int)v.getPricePDay(),v.getBorrowTill(),v.getBrand(),v.getCustomer().getCustID(),v.getVID());
-        {
+        } else {
             ve = String.format("UPDATE public.\"Vehicle\" SET  \"pricePDay\"=%d, \"borrowTill\"=TO_DATE(\'%s\','YYYY-MM-DD'), \"custID\"=%d WHERE \"vID\"=%d;", (int) v.getPricePDay(), v.getBorrowTill(), v.getCustomer().getCustID(), v.getVID());
         }
 
@@ -187,6 +188,12 @@ public class DataBase {
         stat.close();
     }
 
+    /**
+     * deletes the Vehicle our of the database
+     *
+     * @param v
+     * @throws SQLException
+     */
     public void deleteVehicle(Vehicle v) throws SQLException {
         Statement stat = conn.createStatement();
         String ve;
@@ -196,6 +203,12 @@ public class DataBase {
         stat.close();
     }
 
+    /**
+     * deletes the Customer out of the database
+     *
+     * @param c
+     * @throws SQLException
+     */
     public void deleteCustomer(Customer c) throws SQLException {
         Statement stat = conn.createStatement();
         String vc;

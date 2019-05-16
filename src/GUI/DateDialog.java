@@ -22,11 +22,11 @@ public class DateDialog extends javax.swing.JDialog {
     public DateDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        jSDay.setModel(new SpinnerNumberModel(LocalDate.now().getDayOfMonth()+1,1, 31, 1));
+        jSDay.setModel(new SpinnerNumberModel(LocalDate.now().getDayOfMonth() + 1, 1, 31, 1));
         jSMonth.setModel(new SpinnerNumberModel(LocalDate.now().getMonthValue(), 1, 12, 1));
-        jSYear.setModel(new SpinnerNumberModel(LocalDate.now().getYear(), LocalDate.now().getYear(), LocalDate.now().getYear()+50, 1));
+        jSYear.setModel(new SpinnerNumberModel(LocalDate.now().getYear(), LocalDate.now().getYear(), LocalDate.now().getYear() + 50, 1));
     }
-    
+
     private boolean ok;
     private LocalDate date;
 
@@ -121,13 +121,12 @@ public class DateDialog extends javax.swing.JDialog {
 
     private void btOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btOKActionPerformed
 
-        date= LocalDate.of((int)jSYear.getValue(), (int)jSMonth.getValue(), (int)jSDay.getValue());
-        if(LocalDate.now().isAfter(date)){
-            JOptionPane.showMessageDialog(null,"You have to enter a suitable date");
-        }
-        else{
+        date = LocalDate.of((int) jSYear.getValue(), (int) jSMonth.getValue(), (int) jSDay.getValue());
+        if (LocalDate.now().isAfter(date)) {
+            JOptionPane.showMessageDialog(null, "You have to enter a suitable date");
+        } else {
             this.dispose();
-            ok=true;
+            ok = true;
         }
     }//GEN-LAST:event_btOKActionPerformed
 

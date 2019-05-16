@@ -10,12 +10,17 @@ package fahrzeug_vermietung;
  * @author oskar
  */
 public enum CarBrands {
-    BMW,VW,Mercedes,Fiat,Tesla,Audi,Ford;
-    
-    
-    
-    public CarBrands whichBrand(String name){
-        switch(name){
+    BMW, VW, Mercedes, Fiat, Tesla, Audi, Ford;
+
+    /**
+     * method which gets a String with the name of the brand and returns the
+     * enum of the brand
+     *
+     * @param name
+     * @return
+     */
+    public CarBrands whichBrand(String name) {
+        switch (name) {
             case "BMW":
                 return CarBrands.BMW;
             case "VW":

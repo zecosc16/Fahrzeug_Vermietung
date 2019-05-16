@@ -23,7 +23,7 @@ public class CustomerBL extends AbstractListModel{
     }
 
 
-        
+       
     @Override
     public int getSize() {
         return customers.size();
@@ -43,6 +43,12 @@ public class CustomerBL extends AbstractListModel{
         return customers.get(idx);
     }
     
+    /**
+     * returns the customer with the given id
+     * @param id
+     * @return
+     * @throws Exception 
+     */
     public Customer getCWID(int id) throws Exception{
         for (Customer customer : customers) {
             if(customer.getCustID()==id)
@@ -51,6 +57,9 @@ public class CustomerBL extends AbstractListModel{
         throw new Exception("FK of vehicle is false(custID)");
     }
     
+    /**
+     * method for refreshing the list
+     */
     public void update(){
         fireContentsChanged(this, 0, customers.size());
     }
