@@ -293,7 +293,7 @@ public class GUI extends javax.swing.JFrame {
         int amount = Integer.parseInt(JOptionPane.showInputDialog("How much do you want to pay in?"));
         Customer c = customerBL.get(customerList.getSelectedIndex());
         
-        c.pay(amount);
+        c.payIn(amount);
         try {
             database.updateCustomer(c);
         } catch (SQLException ex) {

@@ -60,6 +60,7 @@ public class Vehicle {
      * @throws Exception
      */
     public void borrow(Customer c, LocalDate d) throws Exception {
+
         if (this.borrowTill != null) {
             throw new VehicleNotAvailable();
         }

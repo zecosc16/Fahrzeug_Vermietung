@@ -53,7 +53,6 @@ public class Customer {
      * @param amount 
      */
     public void pay(double amount) {
-        if(amount>0)
             money += amount;
     }
 
@@ -61,4 +60,10 @@ public class Customer {
     public String toString() {
         return String.format("%d %s has %.2f€", custID, name, money);
     }
+    
+    public void payIn(double amount){
+        if(amount>0)
+            money+=amount;
+    }
+            
 }
