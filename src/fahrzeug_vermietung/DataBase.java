@@ -7,6 +7,12 @@ package fahrzeug_vermietung;
 
 import BL.CustomerBL;
 import BL.VehicleBL;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -27,17 +33,25 @@ public class DataBase {
     private Connection conn;
     private static DataBase theInstance;
 
-    public DataBase() throws SQLException {
+    public DataBase() throws SQLException, FileNotFoundException, IOException {
+        BufferedReader br = new BufferedReader(new FileReader("./preferences.txt"));
+        String database=br.readLine();
+        database= database.substring(database.indexOf("\"")+1,database.indexOf("\"",database.indexOf("\"")+1));
+        String username = br.readLine();
+        username=username.substring(username.indexOf("\"")+1,username.indexOf("\"",username.indexOf("\"")+1));
+        String pw = br.readLine();
+        pw=pw.substring(pw.indexOf("\"")+1,pw.indexOf("\"",pw.indexOf("\"")+1));
         try {
 
             Class.forName("org.postgresql.Driver");
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:1521/Vehicle_rental", "postgres", "Pw.12345");
+//            conn = DriverManager.getConnection("jdbc:postgresql://localhost:1521/Vehicle_rental", "postgres", "Pw.12345");
+              conn = DriverManager.getConnection(database, username, "Pw.12345");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public static synchronized DataBase getInstance() throws SQLException {
+    public static synchronized DataBase getInstance() throws SQLException, IOException {
         if (theInstance == null) {
             theInstance = new DataBase();
         }

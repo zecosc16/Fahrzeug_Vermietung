@@ -46,7 +46,11 @@ public class GUI extends javax.swing.JFrame {
         
         vehicleList.setCellRenderer(new ListCellRenderer());
         try {
-            database = DataBase.getInstance();
+            try {
+                database = DataBase.getInstance();
+            } catch (IOException ex) {
+                Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -1,0 +1,3 @@
+DatabaseName:"jdbc:postgresql://localhost:1521/Vehicle_rental"
+User:"postgres"
+Password:"Pw.12345"
