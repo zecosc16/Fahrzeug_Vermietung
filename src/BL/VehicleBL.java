@@ -70,7 +70,7 @@ public class VehicleBL extends AbstractListModel {
      */
     public boolean hasBorrowed(Customer c) {
         for (Vehicle vehicle : vehicle) {
-            if (vehicle.getCustomer().equals(c)) {
+            if (vehicle.getCustomer()!=null&&vehicle.getCustomer().equals(c)) {
                 return true;
             }
         }

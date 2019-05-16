@@ -53,7 +53,8 @@ public class Customer {
      * @param amount 
      */
     public void pay(double amount) {
-        money += amount;
+        if(amount>0)
+            money += amount;
     }
 
     @Override
