@@ -7,6 +7,9 @@ package BL;
 
 import fahrzeug_vermietung.Customer;
 import fahrzeug_vermietung.Vehicle;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.AbstractListModel;
@@ -67,6 +70,16 @@ public class CustomerBL extends AbstractListModel{
     public void deleteCustomer(Customer c){
         customers.remove(c);
         fireIntervalRemoved(this, 0, customers.size());
+    }
+    
+    
+     public void export() throws IOException, NullPointerException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter("./customer.csv"));
+        for (Customer customer : customers) {
+            bw.write(String.format("%d,%s,%s,%s,%d",customer.getCustID(),customer.getName(),customer.getGebDat(),customer.getTelNum(),(int)customer.getMoney() ));
+            bw.newLine();
+        }
+        bw.close();
     }
     
 }

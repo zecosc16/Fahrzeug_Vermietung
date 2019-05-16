@@ -41,7 +41,7 @@ public class GUI extends javax.swing.JFrame {
     
     public GUI() {
         initComponents();
-        costumerList.setModel(customerBL);
+        customerList.setModel(customerBL);
         vehicleList.setModel(vehicleBL);
         
         vehicleList.setCellRenderer(new ListCellRenderer());
@@ -81,16 +81,17 @@ public class GUI extends javax.swing.JFrame {
         jMBorrowCar = new javax.swing.JMenuItem();
         jMVehicleIsBack = new javax.swing.JMenuItem();
         jMDeleteVehicle = new javax.swing.JMenuItem();
-        jMExportData = new javax.swing.JMenuItem();
+        jMExportVehicles = new javax.swing.JMenuItem();
         customerPopM = new javax.swing.JPopupMenu();
         jMPayIn = new javax.swing.JMenuItem();
         jMDeleteCustomer = new javax.swing.JMenuItem();
+        jMExportCustomer = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         vehicleList = new javax.swing.JList<>();
         btNewCustomer = new javax.swing.JButton();
         btNewVehicle = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        costumerList = new javax.swing.JList<>();
+        customerList = new javax.swing.JList<>();
 
         jMBorrowCar.setText("borrow Car");
         jMBorrowCar.addActionListener(new java.awt.event.ActionListener() {
@@ -116,13 +117,13 @@ public class GUI extends javax.swing.JFrame {
         });
         vehiclePopM.add(jMDeleteVehicle);
 
-        jMExportData.setText("export Data");
-        jMExportData.addActionListener(new java.awt.event.ActionListener() {
+        jMExportVehicles.setText("export Vehicles");
+        jMExportVehicles.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMExportDataActionPerformed(evt);
+                jMExportVehiclesActionPerformed(evt);
             }
         });
-        vehiclePopM.add(jMExportData);
+        vehiclePopM.add(jMExportVehicles);
 
         jMPayIn.setText("Pay in");
         jMPayIn.addActionListener(new java.awt.event.ActionListener() {
@@ -139,6 +140,14 @@ public class GUI extends javax.swing.JFrame {
             }
         });
         customerPopM.add(jMDeleteCustomer);
+
+        jMExportCustomer.setText("export Customers");
+        jMExportCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMExportCustomerActionPerformed(evt);
+            }
+        });
+        customerPopM.add(jMExportCustomer);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -187,13 +196,13 @@ public class GUI extends javax.swing.JFrame {
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(btNewVehicle, gridBagConstraints);
 
-        costumerList.setModel(new javax.swing.AbstractListModel<String>() {
+        customerList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
-        costumerList.setComponentPopupMenu(customerPopM);
-        jScrollPane2.setViewportView(costumerList);
+        customerList.setComponentPopupMenu(customerPopM);
+        jScrollPane2.setViewportView(customerList);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -241,7 +250,7 @@ public class GUI extends javax.swing.JFrame {
         int idx = vehicleList.getSelectedIndex();
         try {
             Vehicle v = vehicleBL.get(idx);
-            Customer c = customerBL.get(costumerList.getSelectedIndex());
+            Customer c = customerBL.get(customerList.getSelectedIndex());
             DateDialog d = new DateDialog(this, true);
             d.setVisible(true);
             if (d.isOk()) {
@@ -282,7 +291,7 @@ public class GUI extends javax.swing.JFrame {
 
     private void jMPayInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMPayInActionPerformed
         int amount = Integer.parseInt(JOptionPane.showInputDialog("How much do you want to pay in?"));
-        Customer c = customerBL.get(costumerList.getSelectedIndex());
+        Customer c = customerBL.get(customerList.getSelectedIndex());
         
         c.pay(amount);
         try {
@@ -312,7 +321,7 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jMDeleteVehicleActionPerformed
 
     private void jMDeleteCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMDeleteCustomerActionPerformed
-        Customer c = customerBL.get(costumerList.getSelectedIndex());
+        Customer c = customerBL.get(customerList.getSelectedIndex());
         if(!vehicleBL.hasBorrowed(c)){
         try {
             database.deleteCustomer(c);
@@ -327,7 +336,7 @@ public class GUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMDeleteCustomerActionPerformed
 
-    private void jMExportDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMExportDataActionPerformed
+    private void jMExportVehiclesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMExportVehiclesActionPerformed
 //        JFileChooser jf = new JFileChooser();
 //        jf.showOpenDialog(this);
         
@@ -343,7 +352,20 @@ public class GUI extends javax.swing.JFrame {
         catch(Exception ex){
             ex.printStackTrace();
         }
-    }//GEN-LAST:event_jMExportDataActionPerformed
+    }//GEN-LAST:event_jMExportVehiclesActionPerformed
+
+    private void jMExportCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMExportCustomerActionPerformed
+        try {
+            customerBL.export();
+        } catch (IOException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NullPointerException ex) {
+           
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_jMExportCustomerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -383,12 +405,13 @@ public class GUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btNewCustomer;
     private javax.swing.JButton btNewVehicle;
-    private javax.swing.JList<String> costumerList;
+    private javax.swing.JList<String> customerList;
     private javax.swing.JPopupMenu customerPopM;
     private javax.swing.JMenuItem jMBorrowCar;
     private javax.swing.JMenuItem jMDeleteCustomer;
     private javax.swing.JMenuItem jMDeleteVehicle;
-    private javax.swing.JMenuItem jMExportData;
+    private javax.swing.JMenuItem jMExportCustomer;
+    private javax.swing.JMenuItem jMExportVehicles;
     private javax.swing.JMenuItem jMPayIn;
     private javax.swing.JMenuItem jMVehicleIsBack;
     private javax.swing.JScrollPane jScrollPane1;

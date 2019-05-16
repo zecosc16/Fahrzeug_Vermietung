@@ -101,7 +101,7 @@ public class VehicleBL extends AbstractListModel {
      * @throws NullPointerException
      */
     public void export() throws IOException, NullPointerException {
-        BufferedWriter bw = new BufferedWriter(new FileWriter("./file.csv"));
+        BufferedWriter bw = new BufferedWriter(new FileWriter("./vehicles.csv"));
         for (Vehicle vehicle : vehicle) {
             if (vehicle.getBorrowTill() == null) {
                 bw.write(String.format("%d,%s,%s,%d", vehicle.getVID(), vehicle.getBrand(), vehicle.getName(), vehicle.getPricePDay()));
