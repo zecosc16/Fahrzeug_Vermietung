@@ -6,6 +6,7 @@
 package BL;
 
 import fahrzeug_vermietung.Customer;
+import fahrzeug_vermietung.Vehicle;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.AbstractListModel;
@@ -54,5 +55,9 @@ public class CustomerBL extends AbstractListModel{
         fireContentsChanged(this, 0, customers.size());
     }
     
+    public void deleteCustomer(Customer c){
+        customers.remove(c);
+        fireIntervalRemoved(this, 0, customers.size());
+    }
     
 }

@@ -55,7 +55,7 @@ public class Vehicle {
         if (this.borrowTill != null) {
             throw new VehicleNotAvailable();
         }
-        double price = (double) (ChronoUnit.DAYS.between(LocalDate.now(), d) * pricePDay);
+        double price = (double) ((ChronoUnit.DAYS.between(LocalDate.now(), d)+1) * pricePDay);
         if (price > c.getMoney()) {
             throw new NotEnoughMoney();
         }

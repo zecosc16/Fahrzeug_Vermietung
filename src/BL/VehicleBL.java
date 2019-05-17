@@ -38,6 +38,7 @@ public class VehicleBL extends AbstractListModel {
     }
 
     public Vehicle get(int idx) {
+        System.out.println(""+idx);
         return vehicle.get(idx);
     }
 
@@ -49,4 +50,37 @@ public class VehicleBL extends AbstractListModel {
     public void update(){
         fireContentsChanged(this, 0, vehicle.size());
     }
+    
+    public void deleteVehicle(Vehicle v){
+        vehicle.remove(v);
+        fireIntervalRemoved(this, 0, vehicle.size());
+    }
+    
+    /**
+     * returns true if a vehicle is borrowed by the customer given
+     * @param c
+     * @return 
+     */
+    public boolean hasBorrowed(Customer c){
+        for (Vehicle vehicle : vehicle) {
+            if(vehicle.getCustomer().equals(c))
+                return true;
+        }
+        return false;
+    }
+    
+    /**
+     * returns ArrayList with the indexes of vehicles whose borrowDate is over todayDate
+     * @return 
+     */
+    public ArrayList<Integer> getExpiredCars(){
+        ArrayList<Integer> v = new ArrayList<>();
+        for (Vehicle vehicle : vehicle) {
+            if(vehicle.getBorrowTill().isAfter(LocalDate.now())){
+                v.add(this.vehicle.indexOf(vehicle));
+            }
+        }
+        return v;
+    }
+    
 }

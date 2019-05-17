@@ -69,26 +69,16 @@ public class DataBase {
         stat.close();
         return vID;
     }
-//    public int addVehicle(String name, int pricePDay,LocalDate d,CarBrands c) throws SQLException {
-//        Statement stat = conn.createStatement();
-//
-//        if (d != null) {
-//            String sqlString = String.format("INSERT INTO public.\"Vehicle\"(name, \"pricePDay\", \"borrowTill\", \"CarBrand\")VALUES (\'%s\',%d,TO_DATE(\'%s\','YYYY-MM-DD'),\'%s\');", name, pricePDay, d, c);
-//            stat.executeUpdate(sqlString);
-//        } else {
-//            String sqlString = String.format("INSERT INTO public.\"Vehicle\"(name, \"pricePDay\",  \"CarBrand\")VALUES (\'%s\',%d,\'%s\');", name, pricePDay, c);
-//            stat.executeUpdate(sqlString);
-//        }
-//
-//        String getID = "SELECT \"vID\" FROM public.\"Vehicle\"  ORDER BY \"vID\" DESC LIMIT 1;";
-//        ResultSet r = stat.executeQuery(getID);
-//        r.next();
-//        int vID = r.getInt("vID");
-//        
-//        stat.close();
-//        return vID;
-//    }
 
+
+    /**
+     * method which is called to load all Objects from the databank
+     *
+     * @param vehicles
+     * @param customers
+     * @throws SQLException
+     * @throws Exception
+     */
     public void initialize(VehicleBL vehicles, CustomerBL customers) throws SQLException, Exception {
 
         this.getCustomers(customers);
@@ -96,6 +86,14 @@ public class DataBase {
 
     }
 
+    /**
+     * method for getting all Vehicles of the Databank
+     *
+     * @param bl
+     * @param customers
+     * @throws SQLException
+     * @throws Exception
+     */
     public void getVehicles(VehicleBL bl, CustomerBL customers) throws SQLException, Exception {
         CarBrands c = CarBrands.Audi;
 
@@ -117,7 +115,11 @@ public class DataBase {
 
         stat.close();
     }
-
+    /**
+     * method fot getting the customers of the database
+     * @param customers
+     * @throws SQLException 
+     */
     public void getCustomers(CustomerBL customers) throws SQLException {
         Statement stat = conn.createStatement();
         String s = "SELECT \"telNum\", money, \"gebDat\", name, \"cID\" FROM public.\"Customer\";";
@@ -128,6 +130,15 @@ public class DataBase {
         stat.close();
     }
 
+    /**
+     * adds a Customer to the database and returns the ID of the Object
+     * @param name
+     * @param gebDat
+     * @param telNum
+     * @param money
+     * @return
+     * @throws SQLException 
+     */
     public int addCustomer(String name, LocalDate gebDat, String telNum, double money) throws SQLException {
         Statement stat = conn.createStatement();
         String sqlString = String.format("INSERT INTO public.\"Customer\"(\"telNum\", money, \"gebDat\", name)VALUES (\'%s\', %d, TO_DATE(\'%s\','YYYY-MM-DD'),\'%s\')", telNum, (int) money, gebDat, name);
@@ -176,6 +187,22 @@ public class DataBase {
         stat.close();
     }
 
-    
-    
+    public void deleteVehicle(Vehicle v) throws SQLException {
+        Statement stat = conn.createStatement();
+        String ve;
+        ve = String.format("DELETE FROM public.\"Vehicle\" WHERE \"vID\"=%d;", v.getVID());
+
+        stat.executeUpdate(ve);
+        stat.close();
+    }
+
+    public void deleteCustomer(Customer c) throws SQLException {
+        Statement stat = conn.createStatement();
+        String vc;
+        vc = String.format("DELETE FROM public.\"Customer\" WHERE \"cID\"=%d;", c.getCustID());
+
+        stat.executeUpdate(vc);
+        stat.close();
+    }
+
 }

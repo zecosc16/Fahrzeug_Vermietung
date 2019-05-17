@@ -16,6 +16,7 @@ import fahrzeug_vermietung.Customer;
 import fahrzeug_vermietung.DataBase;
 import fahrzeug_vermietung.Vehicle;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -40,6 +41,8 @@ public class GUI extends javax.swing.JFrame {
         initComponents();
         costumerList.setModel(customerBL);
         vehicleList.setModel(vehicleBL);
+        
+        vehicleList.setCellRenderer(new ListCellRenderer());
         try {
             database = DataBase.getInstance();
         } catch (SQLException ex) {
@@ -53,6 +56,12 @@ public class GUI extends javax.swing.JFrame {
         } catch (Exception ex) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        
+//        for (Integer expiredCar : vehicleBL.getExpiredCars()) {
+//          
+//        }
+        
         
     }
 
@@ -69,9 +78,10 @@ public class GUI extends javax.swing.JFrame {
         vehiclePopM = new javax.swing.JPopupMenu();
         jMBorrowCar = new javax.swing.JMenuItem();
         jMVehicleIsBack = new javax.swing.JMenuItem();
+        jMDeleteVehicle = new javax.swing.JMenuItem();
         customerPopM = new javax.swing.JPopupMenu();
         jMPayIn = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        jMDeleteCustomer = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         vehicleList = new javax.swing.JList<>();
         btNewCustomer = new javax.swing.JButton();
@@ -95,6 +105,14 @@ public class GUI extends javax.swing.JFrame {
         });
         vehiclePopM.add(jMVehicleIsBack);
 
+        jMDeleteVehicle.setText("delete");
+        jMDeleteVehicle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMDeleteVehicleActionPerformed(evt);
+            }
+        });
+        vehiclePopM.add(jMDeleteVehicle);
+
         jMPayIn.setText("Pay in");
         jMPayIn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -103,7 +121,13 @@ public class GUI extends javax.swing.JFrame {
         });
         customerPopM.add(jMPayIn);
 
-        jMenuItem1.setText("jMenuItem1");
+        jMDeleteCustomer.setText("delete");
+        jMDeleteCustomer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMDeleteCustomerActionPerformed(evt);
+            }
+        });
+        customerPopM.add(jMDeleteCustomer);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new java.awt.GridBagLayout());
@@ -216,12 +240,13 @@ public class GUI extends javax.swing.JFrame {
                 database.updateVehicle(v);
                 database.updateCustomer(c);
                 vehicleBL.update();
+                customerBL.update();
             }
 
-//        } catch (NotEnoughMoney ex) {
-//            JOptionPane.showMessageDialog(null, "Customer has not enough money");
-//        } catch (VehicleNotAvailable ex) {
-//            JOptionPane.showMessageDialog(null, "Vehicle already borrowed");
+        } catch (NotEnoughMoney ex) {
+            JOptionPane.showMessageDialog(null, "Customer has not enough money");
+        } catch (VehicleNotAvailable ex) {
+            JOptionPane.showMessageDialog(null, "Vehicle already borrowed");
         } catch (ArrayIndexOutOfBoundsException ex) {
             JOptionPane.showMessageDialog(null, "Please select a vehicle and a customer");
         } catch (Exception ex) {
@@ -252,6 +277,38 @@ public class GUI extends javax.swing.JFrame {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jMPayInActionPerformed
+
+    private void jMDeleteVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMDeleteVehicleActionPerformed
+        Vehicle v= vehicleBL.get(vehicleList.getSelectedIndex());
+        if(v.getBorrowTill()==null){
+        try {
+            database.deleteVehicle(v);
+        } catch (SQLException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        vehicleBL.deleteVehicle(v);
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"can't delete Vehicle as it is still borrowed");
+        }
+    }//GEN-LAST:event_jMDeleteVehicleActionPerformed
+
+    private void jMDeleteCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMDeleteCustomerActionPerformed
+        Customer c = customerBL.get(costumerList.getSelectedIndex());
+        System.out.println(""+c.toString());
+        if(!vehicleBL.hasBorrowed(c)){
+        try {
+            database.deleteCustomer(c);
+        } catch (SQLException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        customerBL.deleteCustomer(c);
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"can't delete Customer as he has still borrowed a car");
+        }
+    }//GEN-LAST:event_jMDeleteCustomerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -294,9 +351,10 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JList<String> costumerList;
     private javax.swing.JPopupMenu customerPopM;
     private javax.swing.JMenuItem jMBorrowCar;
+    private javax.swing.JMenuItem jMDeleteCustomer;
+    private javax.swing.JMenuItem jMDeleteVehicle;
     private javax.swing.JMenuItem jMPayIn;
     private javax.swing.JMenuItem jMVehicleIsBack;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JList<String> vehicleList;
