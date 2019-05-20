@@ -17,11 +17,13 @@ import fahrzeug_vermietung.DataBase;
 import fahrzeug_vermietung.Vehicle;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 /**
@@ -79,6 +81,7 @@ public class GUI extends javax.swing.JFrame {
         jMBorrowCar = new javax.swing.JMenuItem();
         jMVehicleIsBack = new javax.swing.JMenuItem();
         jMDeleteVehicle = new javax.swing.JMenuItem();
+        jMExportData = new javax.swing.JMenuItem();
         customerPopM = new javax.swing.JPopupMenu();
         jMPayIn = new javax.swing.JMenuItem();
         jMDeleteCustomer = new javax.swing.JMenuItem();
@@ -112,6 +115,14 @@ public class GUI extends javax.swing.JFrame {
             }
         });
         vehiclePopM.add(jMDeleteVehicle);
+
+        jMExportData.setText("export Data");
+        jMExportData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMExportDataActionPerformed(evt);
+            }
+        });
+        vehiclePopM.add(jMExportData);
 
         jMPayIn.setText("Pay in");
         jMPayIn.addActionListener(new java.awt.event.ActionListener() {
@@ -256,13 +267,16 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jMBorrowCarActionPerformed
 
     private void jMVehicleIsBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMVehicleIsBackActionPerformed
+        try {
         Vehicle v = vehicleBL.get(vehicleList.getSelectedIndex());
         v.vehicleBack();
         vehicleBL.update();
-        try {
             database.updateVehicle(v);
         } catch (SQLException ex) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch(IndexOutOfBoundsException ex){
+            JOptionPane.showMessageDialog(null, "Please select an Item");
         }
     }//GEN-LAST:event_jMVehicleIsBackActionPerformed
 
@@ -279,6 +293,7 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jMPayInActionPerformed
 
     private void jMDeleteVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMDeleteVehicleActionPerformed
+        try{
         Vehicle v= vehicleBL.get(vehicleList.getSelectedIndex());
         if(v.getBorrowTill()==null){
         try {
@@ -291,11 +306,13 @@ public class GUI extends javax.swing.JFrame {
         else{
             JOptionPane.showMessageDialog(null,"can't delete Vehicle as it is still borrowed");
         }
+        }catch(IndexOutOfBoundsException ex){
+            JOptionPane.showMessageDialog(null, "Please select an Item");
+        }
     }//GEN-LAST:event_jMDeleteVehicleActionPerformed
 
     private void jMDeleteCustomerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMDeleteCustomerActionPerformed
         Customer c = customerBL.get(costumerList.getSelectedIndex());
-        System.out.println(""+c.toString());
         if(!vehicleBL.hasBorrowed(c)){
         try {
             database.deleteCustomer(c);
@@ -309,6 +326,17 @@ public class GUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"can't delete Customer as he has still borrowed a car");
         }
     }//GEN-LAST:event_jMDeleteCustomerActionPerformed
+
+    private void jMExportDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMExportDataActionPerformed
+        JFileChooser jf = new JFileChooser();
+        jf.showOpenDialog(this);
+        
+        try {
+            vehicleBL.export(jf.getSelectedFile());
+        } catch (IOException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMExportDataActionPerformed
 
     /**
      * @param args the command line arguments
@@ -353,6 +381,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMBorrowCar;
     private javax.swing.JMenuItem jMDeleteCustomer;
     private javax.swing.JMenuItem jMDeleteVehicle;
+    private javax.swing.JMenuItem jMExportData;
     private javax.swing.JMenuItem jMPayIn;
     private javax.swing.JMenuItem jMVehicleIsBack;
     private javax.swing.JScrollPane jScrollPane1;

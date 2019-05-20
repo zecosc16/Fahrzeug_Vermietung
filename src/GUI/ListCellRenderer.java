@@ -29,6 +29,8 @@ public class ListCellRenderer implements javax.swing.ListCellRenderer{
         if(v.getBorrowTill()!=null){
             if(v.getBorrowTill().isBefore(LocalDate.now()))
                 label.setBackground(Color.red);
+            else if(v.getBorrowTill().equals(LocalDate.now()))
+                label.setBackground(Color.yellow);
         }
         
         if(isSelected)

@@ -8,6 +8,10 @@ package BL;
 import fahrzeug_vermietung.CarBrands;
 import fahrzeug_vermietung.Customer;
 import fahrzeug_vermietung.Vehicle;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.AbstractListModel;
@@ -38,7 +42,7 @@ public class VehicleBL extends AbstractListModel {
     }
 
     public Vehicle get(int idx) {
-        System.out.println(""+idx);
+        System.out.println("" + idx);
         return vehicle.get(idx);
     }
 
@@ -46,41 +50,58 @@ public class VehicleBL extends AbstractListModel {
         vehicle.add(new Vehicle(whichBrand, string, aDouble, toLocalDate, get, vID));
         fireIntervalAdded(this, vehicle.size(), vehicle.size());
     }
-    
-    public void update(){
+
+    public void update() {
         fireContentsChanged(this, 0, vehicle.size());
     }
-    
-    public void deleteVehicle(Vehicle v){
+
+    public void deleteVehicle(Vehicle v) {
         vehicle.remove(v);
         fireIntervalRemoved(this, 0, vehicle.size());
     }
-    
+
     /**
      * returns true if a vehicle is borrowed by the customer given
+     *
      * @param c
-     * @return 
+     * @return
      */
-    public boolean hasBorrowed(Customer c){
+    public boolean hasBorrowed(Customer c) {
         for (Vehicle vehicle : vehicle) {
-            if(vehicle.getCustomer().equals(c))
+            if (vehicle.getCustomer().equals(c)) {
                 return true;
+            }
         }
         return false;
     }
-    
+
     /**
-     * returns ArrayList with the indexes of vehicles whose borrowDate is over todayDate
-     * @return 
+     * returns ArrayList with the indexes of vehicles whose borrowDate is over
+     * todayDate
+     *
+     * @return
      */
-    public ArrayList<Integer> getExpiredCars(){
+    public ArrayList<Integer> getExpiredCars() {
         ArrayList<Integer> v = new ArrayList<>();
         for (Vehicle vehicle : vehicle) {
-            if(vehicle.getBorrowTill().isAfter(LocalDate.now())){
+            if (vehicle.getBorrowTill().isAfter(LocalDate.now())) {
                 v.add(this.vehicle.indexOf(vehicle));
             }
         }
         return v;
     }
-    
+
+    public void export(File f) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+        for (Vehicle vehicle : vehicle) {
+            if (vehicle.getBorrowTill() == null) {
+                bw.write(String.format("%d,%s,%s,%d", vehicle.getVID(), vehicle.getBrand(), vehicle.getName(), vehicle.getPricePDay()));
+            } else {
+                bw.write(String.format("%d,%s,%s,%d,%s,%d", vehicle.getVID(), vehicle.getBrand(), vehicle.getName(), vehicle.getPricePDay(), vehicle.getBorrowTill(), vehicle.getCustomer().getCustID()));
+            }
+            bw.newLine();
+        }
+        bw.close();
+    }
+
 }
